@@ -1,0 +1,43 @@
+/* Navbar Styles */
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid #e6e6e6;
+  }
+  
+  .sidebar h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 10px;
+  }
+  
+  .sidebar ul li a,
+  .sidebar ul li button {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    text-align: left;
+  }
+  
+  .sidebar ul li a:hover,
+  .sidebar ul li a.active,
+  .sidebar ul li button:hover,
+  .sidebar ul li button.active {
+    background-color: #e0e7ff;
+    color: #4f46e5;
+  }
+  
