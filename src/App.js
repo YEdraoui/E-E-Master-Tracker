@@ -1,9 +1,11 @@
+// src/App.js
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Partners from './components/Partners';
-import TrackingTable from './components/TrackingTable'; 
+import TrackingTable from './components/TrackingTable';
+import Events from './components/Events'; // Import the Events component
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -22,6 +24,7 @@ function App() {
         <Route path="/dashboard" element={authenticated ? <Dashboard /> : <Navigate to="/" replace />} />
         <Route path="/partners" element={authenticated ? <Partners /> : <Navigate to="/" replace />} />
         <Route path="/tracking-table" element={authenticated ? <TrackingTable /> : <Navigate to="/" replace />} />
+        <Route path="/events" element={authenticated ? <Events /> : <Navigate to="/" replace />} /> {/* New Events Route */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

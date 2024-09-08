@@ -1,9 +1,13 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useTable, useSortBy, useGlobalFilter, usePagination } from 'react-table';
-import { supabase } from '../supabaseClient';
+// src/components/Partners.js
+import React, { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom'; // For the navbar links
+import { supabase } from '../supabaseClient'; // Import your Supabase client
+import './Partners.css'; // Keep your styling
+import './Dashboard.css'; // Ensure your dashboard/sidebar styling is applied
+import './navbar.css'; // Ensure your navbar styling is applied
 
 const Partners = () => {
-  const [partnersData, setPartnersData] = useState([]);
+  const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,126 +15,103 @@ const Partners = () => {
     const fetchPartners = async () => {
       try {
         const { data, error } = await supabase.from('partners').select('*');
+        
         if (error) {
-          console.error('Error fetching partners from Supabase:', error);
-          setError('Failed to load partners data.');
-        } else {
-          console.log('Fetched partners data:', data); // Debug log to check fetched data
-          setPartnersData(data);
+          throw error; // Throw error if exists
+        }
+
+        if (data) {
+          setPartners(data); // Set partners data
         }
       } catch (error) {
-        console.error('Error fetching partners:', error);
-        setError('Failed to load partners data.');
+        setError('Error fetching partners: ' + error.message);
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false once the fetch is done
       }
     };
 
     fetchPartners();
   }, []);
 
-  const columns = useMemo(
-    () => [
-      { Header: 'ID', accessor: 'id' },
-      { Header: 'Name', accessor: 'name' },
-      { Header: 'Number of Participations', accessor: 'number_of_participations' },
-      { Header: 'Number of Recruited', accessor: 'number_of_recruited' }
-    ],
-    []
-  );
+  if (loading) {
+    return <div>Loading partners...</div>;
+  }
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    setGlobalFilter,
-    state: { globalFilter },
-  } = useTable(
-    {
-      columns,
-      data: partnersData,
-    },
-    useGlobalFilter,
-    useSortBy,
-    usePagination
-  );
-
-  if (loading) return <div>Loading partners...</div>;
-  if (error) return <div>{error}</div>;
-  if (!partnersData || partnersData.length === 0) return <div>No partners data available.</div>; // Debugging line
+  if (error) {
+    return <div>{error}</div>; // Display any error that occurs
+  }
 
   return (
-    <div className="tracking-table-content">
-      <h2>Partners</h2>
-      {/* Global Search Filter */}
-      <input
-        type="text"
-        value={globalFilter || ''}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-        placeholder="Search..."
-        className="search-input"
-      />
+    <div className="dashboard-container">
+      {/* Navbar */}
+      <div className="sidebar">
+        <h2>E+E Master Tracker</h2>
+        <ul>
+          <li>
+            <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/tracking-table" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Tracking Table
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/events" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Events
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/partners" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Partners
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/job-posting" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Job Posting
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/matching" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Matching
+            </NavLink>
+          </li>
+        </ul>
+      </div>
 
-      {/* Table */}
-      <table {...getTableProps()} className="table">
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} key={column.id}>
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
-                  </span>
-                </th>
-              ))}
+      {/* Main content for Partners */}
+      <div className="main-content">
+        <h2>Partners</h2>
+        <table className="partners-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Company Name</th>
+              <th>Number of Interviews</th>
+              <th>Number of Offers</th>
+              <th>Number of Events</th>
             </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} key={row.id}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} key={cell.column.id}>
-                    {cell.render('Cell')}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-
-      {/* Simple Debugging Table */}
-      {partnersData.length > 0 && (
-        <div>
-          <h3>Debugging Data</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Number of Participations</th>
-                <th>Number of Recruited</th>
-              </tr>
-            </thead>
-            <tbody>
-              {partnersData.map(partner => (
-                <tr key={partner.id}>
-                  <td>{partner.id}</td>
-                  <td>{partner.name}</td>
-                  <td>{partner.number_of_participations}</td>
-                  <td>{partner.number_of_recruited}</td>
+          </thead>
+          <tbody>
+            {partners.length > 0 ? (
+              partners.map((partner) => (
+                <tr key={partner.id_company}>
+                  <td>{partner.id_company}</td>
+                  <td>{partner.name_of_company}</td>
+                  <td>{partner.number_of_interviews}</td>
+                  <td>{partner.number_of_offers}</td>
+                  <td>{partner.number_of_events}</td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5">No partners available</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

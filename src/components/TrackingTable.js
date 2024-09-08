@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { NavLink } from 'react-router-dom'; // Import NavLink
 import { useTable, useSortBy, useGlobalFilter, usePagination } from 'react-table';
 import { supabase } from '../supabaseClient'; // Import your Supabase client instance
 import './TrackingTable.css';
 import './navbar.css'; // Import shared navbar CSS
+import './Dashboard.css'; // Import Dashboard CSS for consistent layout
 
 const TrackingTable = () => {
   const [profilesData, setProfilesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editingCell, setEditingCell] = useState(null); // Track the currently edited cell
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -16,11 +19,9 @@ const TrackingTable = () => {
         if (error) {
           throw error;
         }
-        console.log('Fetched profiles data:', data); // Debug log to check fetched data
         setProfilesData(data);
       } catch (error) {
-        console.error('Error fetching profiles:', error);
-        setError('Failed to load profiles data.'); // Set error message
+        setError('Failed to load profiles data.');
       } finally {
         setLoading(false);
       }
@@ -29,6 +30,20 @@ const TrackingTable = () => {
     fetchProfiles();
   }, []);
 
+  const updateProfileData = async (id, columnId, value) => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ [columnId]: value })
+        .eq('id', id);
+      if (error) throw error;
+      console.log(`Updated profile ID: ${id}, Column: ${columnId}, Value: ${value}`);
+    } catch (error) {
+      console.error('Failed to update profile data:', error.message);
+    }
+  };
+
+  // Define all columns
   const columns = useMemo(
     () => [
       { Header: 'ID', accessor: 'id' },
@@ -89,43 +104,101 @@ const TrackingTable = () => {
   if (loading) return <div>Loading profiles...</div>;
   if (error) return <div>{error}</div>;
 
+  const handleCellEdit = (rowId, columnId, value) => {
+    const updatedProfiles = profilesData.map((profile) => {
+      if (profile.id === rowId) {
+        return { ...profile, [columnId]: value };
+      }
+      return profile;
+    });
+    setProfilesData(updatedProfiles);
+    updateProfileData(rowId, columnId, value); // Update in the database
+  };
+
   return (
-    <div className="tracking-table-content">
-      <input
-        type="text"
-        value={globalFilter || ''}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-        placeholder="Search..."
-        className="search-input"
-      />
-      <table {...getTableProps()} className="table">
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} key={column.id}>
-                  {column.render('Header')}
-                  <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()} key={row.id}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} key={cell.column.id}>
-                    {cell.render('Cell')}
-                  </td>
+    <div className="dashboard-container">
+      {/* Navbar */}
+      <div className="sidebar">
+        <h2>E+E Master Tracker</h2>
+        <ul>
+          <li>
+            <NavLink to="/dashboard" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/tracking-table" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Tracking Table
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/events" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Events
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/partners" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
+              Partners
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+
+      {/* Main Content */}
+      <div className="tracking-table-content main-content">
+        <input
+          type="text"
+          value={globalFilter || ''}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Search..."
+          className="search-input"
+        />
+        <table {...getTableProps()} className="table">
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())} key={column.id}>
+                    {column.render('Header')}
+                    <span>{column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}</span>
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()} key={row.id}>
+                  {row.cells.map((cell) => (
+                    <td
+                      {...cell.getCellProps()}
+                      key={cell.column.id}
+                      onClick={() => setEditingCell({ rowId: row.original.id, columnId: cell.column.id })}
+                    >
+                      {editingCell &&
+                      editingCell.rowId === row.original.id &&
+                      editingCell.columnId === cell.column.id ? (
+                        <input
+                          type="text"
+                          value={cell.value}
+                          onChange={(e) =>
+                            handleCellEdit(row.original.id, cell.column.id, e.target.value)
+                          }
+                          onBlur={() => setEditingCell(null)} // Stop editing on blur
+                        />
+                      ) : (
+                        cell.render('Cell')
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

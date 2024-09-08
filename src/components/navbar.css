@@ -40,4 +40,21 @@
     background-color: #e0e7ff;
     color: #4f46e5;
   }
-  
+  /* src/components/navbar.css */
+
+.nav-link {
+  text-decoration: none;
+  color: black;
+  padding: 10px 20px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #f0f0f0;
+}
+
+.active-link {
+  background-color: #dcdcdc;
+  color: #333;
+}

@@ -1,54 +1,29 @@
-/* Main Content */
-.tracking-table-content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-  }
-  
-  .search-input {
-    padding: 10px;
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    outline: none;
-    transition: all 0.2s ease;
-  }
-  
-  .search-input:focus {
-    border-color: #4a90e2;
-  }
-  
-  /* Table */
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #4a90e2;
-    color: white;
-    cursor: pointer;
-  }
-  
-  tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Editable Input */
-  input[type="text"] {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    outline: none;
-  }
-  
+/* src/components/partners.css */
+.partners-container {
+  padding: 20px;
+  background-color: #f4f4f4;
+}
+
+.partners-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.partners-table th, .partners-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.partners-table th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.partners-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.partners-table tr:hover {
+  background-color: #ddd;
+}
