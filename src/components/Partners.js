@@ -15,7 +15,6 @@ const Partners = () => {
     const fetchPartners = async () => {
       try {
         const { data, error } = await supabase.from('partners').select('*');
-        
         if (error) {
           throw error; // Throw error if exists
         }
@@ -65,16 +64,6 @@ const Partners = () => {
           <li>
             <NavLink to="/partners" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
               Partners
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/job-posting" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
-              Job Posting
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/matching" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
-              Matching
             </NavLink>
           </li>
         </ul>

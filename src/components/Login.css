@@ -1,71 +1,95 @@
+/* Overall container styling */
 .login-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+/* Centered login box */
+.login-box {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.login-box h2 {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #2980b9;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+/* Form input styling */
+.login-box form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-box input {
+  font-size: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-box input:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 8px rgba(41, 128, 185, 0.2);
+}
+
+.login-box input::placeholder {
+  color: #ccc;
+}
+
+/* Button styling */
+.login-box button {
+  font-size: 18px;
+  padding: 16px;
+  border: none;
+  border-radius: 30px;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.login-box button:hover {
+  background-color: #1e5f7f;
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+/* Error message */
+.error {
+  color: #e74c3c;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-box {
+    padding: 30px;
   }
-  
-  .login-container h2 {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #000000;
-  }
-  
-  .login-container form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 320px;
-  }
-  
-  .login-container input {
-    font-size: 16px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    outline: none;
-    transition: border-color 0.3s ease;
-  }
-  
-  .login-container input:focus {
-    border-color: #4caf50;
-  }
-  
-  .login-container button {
-    font-size: 18px;
-    padding: 14px 0;
-    border: none;
-    border-radius: 25px;
-    background-color: #4caf50;
-    color: white;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .login-container button:hover {
-    background-color: #43a047;
-  }
-  
-  .error {
-    color: red;
+
+  .login-box input {
+    padding: 14px;
     font-size: 14px;
-    margin-bottom: 10px;
-    text-align: center;
   }
-  
-  .login-container input::placeholder {
-    color: #ccc;
-    opacity: 1;
+
+  .login-box button {
+    padding: 14px;
+    font-size: 16px;
   }
-  
-  .login-container .icon {
-    position: absolute;
-    right: 10px;
-    top: 12px;
-    pointer-events: none;
-    color: #ccc;
-  }
-  
+}

@@ -1,23 +1,31 @@
-/* src/components/partners.css */
 .partners-container {
-  padding: 20px;
-  background-color: #f4f4f4;
+  padding: 40px;
+  background-color: #f8f9fa;
+  min-height: 100vh; /* Ensure it covers the entire height */
 }
 
 .partners-table {
   width: 100%;
   border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow for professionalism */
 }
 
 .partners-table th, .partners-table td {
-  border: 1px solid #ddd;
-  padding: 12px;
+  padding: 15px;
   text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
 }
 
 .partners-table th {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #2980b9; /* Professional blue header */
+  color: #ffffff;
+  font-weight: 600;
+  text-transform: uppercase; /* Uppercase for header emphasis */
+  letter-spacing: 0.8px;
 }
 
 .partners-table tr:nth-child(even) {
@@ -25,5 +33,14 @@
 }
 
 .partners-table tr:hover {
-  background-color: #ddd;
+  background-color: #f8f9fa; /* Lighter hover effect for improved UX */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .partners-table th,
+  .partners-table td {
+    padding: 12px;
+    font-size: 14px;
+  }
 }

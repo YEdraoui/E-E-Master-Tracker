@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; // Import your Supabase client
 import './Dashboard.css'; // Import common layout CSS
 import './navbar.css'; // Import navbar CSS
+import './Events.css'; // Import Events-specific styling
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -66,7 +67,7 @@ const Events = () => {
   };
 
   if (loading) return <div>Loading events...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="dashboard-container">
@@ -106,7 +107,7 @@ const Events = () => {
         {error && <div className="error-message">{error}</div>}
 
         {/* Display Events Table */}
-        <table className="table">
+        <table className="events-table">
           <thead>
             <tr>
               <th>ID</th>
@@ -132,7 +133,7 @@ const Events = () => {
         {/* Form to Create New Event */}
         <div className="event-form">
           <h3>Create New Event</h3>
-          <div>
+          <div className="form-group">
             <label>Event Name:</label>
             <input
               type="text"
@@ -141,7 +142,7 @@ const Events = () => {
               onChange={(e) => setNewEvent({ ...newEvent, name: e.target.value })}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Event Date:</label>
             <input
               type="date"
@@ -149,7 +150,7 @@ const Events = () => {
               onChange={(e) => setNewEvent({ ...newEvent, event_date: e.target.value })}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Number of Participants:</label>
             <input
               type="number"
@@ -158,7 +159,7 @@ const Events = () => {
               onChange={(e) => setNewEvent({ ...newEvent, number_of_participants: e.target.value })}
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Number of Partners:</label>
             <input
               type="number"

@@ -1,4 +1,3 @@
-// src/components/Dashboard.js
 import React from 'react';
 import { NavLink } from 'react-router-dom'; // For the navbar links
 import './Dashboard.css'; // Ensure your dashboard/sidebar styling is applied
@@ -36,16 +35,6 @@ const Dashboard = () => {
           <li>
             <NavLink to="/partners" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
               Partners
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/job-posting" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
-              Job Posting
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/matching" className={({ isActive }) => (isActive ? 'nav-link active-link' : 'nav-link')}>
-              Matching
             </NavLink>
           </li>
         </ul>
