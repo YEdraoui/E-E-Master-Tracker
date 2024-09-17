@@ -1,4 +1,3 @@
-// src/components/Events.js
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { supabase } from '../supabaseClient'; // Import your Supabase client
@@ -46,15 +45,17 @@ const Events = () => {
       const { data, error } = await supabase.from('events').insert([newEvent]);
       if (error) throw error;
 
-      // Refresh the list of events
-      setEvents([...events, ...data]);
-      setSuccessMessage('Event created successfully!');
+      // Clear form and show success message
       setNewEvent({
         name: '',
         event_date: '',
         number_of_participants: '',
         number_of_partners: ''
       });
+      setSuccessMessage('Event created successfully!');
+
+      // Refresh the page to see the new event
+      window.location.reload();
     } catch (error) {
       setError('Failed to create event.');
     }

@@ -1,26 +1,30 @@
+/* Main Container for Tracking Table */
 .tracking-table-content {
   flex: 1;
-  padding: 40px; /* Larger padding for a more professional look */
-  background-color: #f4f6f9;
+  padding: 40px;
+  background-color: #f3f5f8;
   overflow-y: auto;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Subtle inner shadow */
+  border-radius: 12px;
 }
 
 /* Search Input Styles */
 .search-input {
-  padding: 12px;
+  padding: 14px;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
   margin-bottom: 30px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid #ccd1d9;
+  border-radius: 10px;
   outline: none;
   transition: all 0.3s ease;
   font-size: 16px;
+  background-color: #ffffff;
 }
 
 .search-input:focus {
-  border-color: #2980b9;
-  box-shadow: 0 0 10px rgba(41, 128, 185, 0.2);
+  border-color: #3498db;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
 }
 
 /* Table Styles */
@@ -28,25 +32,25 @@
   width: 100%;
   border-collapse: collapse;
   background-color: #ffffff;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Slight shadow for professionalism */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); /* Deeper shadow for a modern look */
 }
 
 th,
 td {
-  padding: 15px;
+  padding: 18px; /* Increased padding for a spacious feel */
   text-align: left;
   border-bottom: 1px solid #e0e0e0;
   font-size: 16px;
 }
 
 th {
-  background-color: #2980b9; /* Professional blue header */
+  background-color: #3498db; /* Refined blue header for professionalism */
   color: #ffffff;
-  font-weight: 600;
-  text-transform: uppercase; /* Uppercase for header emphasis */
-  letter-spacing: 0.8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   cursor: pointer;
 }
 
@@ -56,42 +60,127 @@ th span {
   color: #ddd;
 }
 
+tr:nth-child(even) {
+  background-color: #f9fbfc; /* Slight zebra striping for readability */
+}
+
 tr:hover {
-  background-color: #f8f9fa;
+  background-color: #eef3f8;
   transition: background-color 0.3s ease;
 }
 
-/* Input in Editable Cells */
+/* Editable Input Styles */
 input[type="text"] {
   width: 100%;
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px;
+  border: 1px solid #d1d1d1;
+  border-radius: 6px;
   outline: none;
   font-size: 16px;
+  background-color: #fafafa;
   transition: border-color 0.2s ease;
 }
 
 input[type="text"]:focus {
-  border-color: #2980b9;
-  box-shadow: 0 0 8px rgba(41, 128, 185, 0.2);
+  border-color: #3498db;
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
+}
+
+/* Scrollable Table */
+.table-wrapper {
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+
+.table {
+  min-width: 1000px; /* Ensure table doesn't shrink on smaller screens */
+}
+
+/* Table Sorting Icons */
+th span {
+  margin-left: 8px;
+  font-size: 12px;
+  color: #ddd;
+  transition: color 0.3s ease;
+}
+
+th:hover span {
+  color: #ffffff;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   th,
   td {
-    padding: 12px;
+    padding: 14px;
     font-size: 14px;
   }
 
   .search-input {
     width: 100%;
     max-width: 100%;
-    padding: 10px;
+    padding: 12px;
   }
 
   .table {
     box-shadow: none;
+    border-radius: 0;
   }
+
+  .tracking-table-content {
+    padding: 20px;
+  }
+}
+
+/* Additional Enhancements */
+@media (max-width: 576px) {
+  th,
+  td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .search-input {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .tracking-table-content {
+    padding: 15px;
+  }
+}
+/* File Upload */
+.file-upload {
+  margin-bottom: 20px;
+}
+
+.upload-label {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #3498db;
+  color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-label:hover {
+  background-color: #2980b9;
+}
+
+.upload-label input {
+  display: none; /* Hide the actual file input */
+}
+
+.upload-status {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.upload-status.success {
+  color: #27ae60;
+}
+
+.upload-status.error {
+  color: #e74c3c;
 }

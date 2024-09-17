@@ -3,16 +3,16 @@
   margin-top: 30px;
   padding: 20px;
   background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
 .event-form h3 {
   margin-bottom: 20px;
-  color: #2c3e50;
+  color: #34495e;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
 }
 
 .form-group {
@@ -28,7 +28,7 @@
 
 .event-form input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border-radius: 8px;
   border: 1px solid #ddd;
   font-size: 16px;
@@ -41,7 +41,7 @@
 }
 
 .event-form button {
-  padding: 12px 20px;
+  padding: 14px 24px;
   background-color: #2980b9;
   color: white;
   border: none;
@@ -91,7 +91,7 @@
 }
 
 .events-table th, .events-table td {
-  padding: 12px 20px;
+  padding: 14px 22px;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }

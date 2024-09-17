@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { NavLink } from 'react-router-dom'; // Import NavLink
+import { NavLink } from 'react-router-dom'; 
 import { useTable, useSortBy, useGlobalFilter, usePagination } from 'react-table';
-import { supabase } from '../supabaseClient'; // Import your Supabase client instance
+import { supabase } from '../supabaseClient'; 
 import './TrackingTable.css';
-import './navbar.css'; // Import shared navbar CSS
-import './Dashboard.css'; // Import Dashboard CSS for consistent layout
+import './navbar.css';
+import './Dashboard.css';
+import * as XLSX from 'xlsx'; // For Excel file handling
 
 const TrackingTable = () => {
   const [profilesData, setProfilesData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [editingCell, setEditingCell] = useState(null); // Track the currently edited cell
+  const [editingCell, setEditingCell] = useState(null);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -43,7 +44,7 @@ const TrackingTable = () => {
     }
   };
 
-  // Define all columns
+  // Define columns
   const columns = useMemo(
     () => [
       { Header: 'ID', accessor: 'id' },
@@ -101,9 +102,6 @@ const TrackingTable = () => {
     usePagination
   );
 
-  if (loading) return <div>Loading profiles...</div>;
-  if (error) return <div>{error}</div>;
-
   const handleCellEdit = (rowId, columnId, value) => {
     const updatedProfiles = profilesData.map((profile) => {
       if (profile.id === rowId) {
@@ -114,6 +112,35 @@ const TrackingTable = () => {
     setProfilesData(updatedProfiles);
     updateProfileData(rowId, columnId, value); // Update in the database
   };
+
+  // Handle file upload
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = async (e) => {
+      const binaryStr = e.target.result;
+      const workbook = XLSX.read(binaryStr, { type: 'binary' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+      try {
+        // Insert data into Supabase
+        const { data, error } = await supabase.from('profiles').insert(sheet);
+        if (error) {
+          throw error;
+        }
+        setProfilesData([...profilesData, ...data]); // Update the table with the new data
+      } catch (error) {
+        setError('Failed to upload data from Excel.');
+        console.error(error);
+      }
+    };
+    reader.readAsBinaryString(file);
+  };
+
+  if (loading) return <div>Loading profiles...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="dashboard-container">
@@ -153,6 +180,12 @@ const TrackingTable = () => {
           placeholder="Search..."
           className="search-input"
         />
+
+        {/* Excel file upload */}
+        <div className="file-upload">
+          <input type="file" accept=".xlsx, .xls" onChange={handleFileUpload} />
+        </div>
+
         <table {...getTableProps()} className="table">
           <thead>
             {headerGroups.map((headerGroup) => (
