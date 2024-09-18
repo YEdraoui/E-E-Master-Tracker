@@ -35,13 +35,24 @@ const TrackingTable = () => {
     try {
       const { error } = await supabase
         .from('profiles')
-        .update({ [columnId]: value })
-        .eq('id', id);
+        .update({ [columnId]: value }) // Update the specific column in the database
+        .eq('id', id); // Update the row with matching ID
       if (error) throw error;
       console.log(`Updated profile ID: ${id}, Column: ${columnId}, Value: ${value}`);
     } catch (error) {
       console.error('Failed to update profile data:', error.message);
     }
+  };
+
+  const handleCellEdit = (rowId, columnId, value) => {
+    const updatedProfiles = profilesData.map((profile) => {
+      if (profile.id === rowId) {
+        return { ...profile, [columnId]: value }; // Update the local state for rendering
+      }
+      return profile;
+    });
+    setProfilesData(updatedProfiles); // Update local state
+    updateProfileData(rowId, columnId, value); // Update database directly
   };
 
   // Define columns
@@ -101,17 +112,6 @@ const TrackingTable = () => {
     useSortBy,
     usePagination
   );
-
-  const handleCellEdit = (rowId, columnId, value) => {
-    const updatedProfiles = profilesData.map((profile) => {
-      if (profile.id === rowId) {
-        return { ...profile, [columnId]: value };
-      }
-      return profile;
-    });
-    setProfilesData(updatedProfiles);
-    updateProfileData(rowId, columnId, value); // Update in the database
-  };
 
   // Handle file upload
   const handleFileUpload = async (event) => {
